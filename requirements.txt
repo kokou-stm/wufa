@@ -1,0 +1,5 @@
+django
+channels==4.0.0
+daphne
+Pillow
+agora-python-sdk

@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WUFA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/ca00bf51a9.js" crossorigin="anonymous"></script>
+    <style>
+        /* Styles de la section utilisateur */
+        .user-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #5865F2;
+            /* Couleur Discord */
+        }
+
+        /* Styles de la section contenu */
+        .content-section {
+            margin-left: 50px;
+            /* Décalage sous la photo */
+            background-color: #F2F3F5;
+            padding: 10px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .message-text {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .message-file {
+            color: #5865F2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .message-file:hover {
+            text-decoration: underline;
+        }
+
+        /* Horodatage */
+        .timestamp {
+            font-size: 12px;
+            color: #747f8d;
+            /* Gris Discord */
+            margin-top: 5px;
+        }
+
+        /* Actions au survol */
+        .actions {
+            display: none;
+            /* Par défaut, les actions sont masquées */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .message:hover .actions {
+            display: flex;
+            /* Afficher les actions au survol */
+            gap: 5px;
+        }
+
+        .delete-button,
+        .edit-button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-button:hover,
+        .edit-button:hover {
+            color: #3038b1;
+            /* Couleur Discord au survol */
+        }
+
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #e8f0fe;
+            --border-color: #dadce0;
+            --text-color: #3c4043;
+            --shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f1f3f4;
+            color: var(--text-color);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .action-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .class-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            height: 100px;
+            position: relative;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            max-width: 80%;
+        }
+
+        .card-header p {
+            font-size: 0.9rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .card-footer span {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+
+        .notification {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Différentes couleurs pour les cartes */
+        .bg-blue {
+            background-color: #1a73e8;
+        }
+
+        .bg-green {
+            background-color: #1e8e3e;
+        }
+
+        .bg-purple {
+            background-color: #8430ce;
+        }
+
+        .bg-orange {
+            background-color: #e37400;
+        }
+
+        .bg-red {
+            background-color: #d93025;
+        }
+
+        .bg-teal {
+            background-color: #129eaf;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background-color: #d1e7dd;
+            /* Vert clair */
+            align-self: flex-end;
+            /* Aligné à droite */
+        }
+
+        .message.other {
+            background-color: #f8d7da;
+            /* Rouge clair */
+            align-self: flex-start;
+            /* Aligné à gauche */
+        }
+
+        .message-file {
+            color: #0d6efd;
+            /* Bleu */
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .message-file:hover {
+            text-decoration: underline;
+        }
+
+        .message-file::before {
+            content: '📄';
+            /* Icône document */
+            margin-right: 5px;
+        }
+    </style>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Redressed&family=Merriweather:wght@300;400;700&display=swap");
+
+        .redressed {
+            font-family: "Redressed", serif;
+        }
+
+        .merriweather {
+            font-family: "Merriweather", serif;
+        }
+
+        .message {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+            /* Aligne les messages de l'utilisateur à droite */
+        }
+    </style>
+    <style>
+        .user-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .user {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user:hover {
+            background-color: #e0e0e0;
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 8px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: #0673e8;
+            color: white;
+        }
+
+        .message.other {
+            align-self: flex-start;
+            background-color: #e5e5ea;
+            color: black;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #10a37f;
+            --secondary-color: #f7f7f8;
+            --border-color: #e5e5e5;
+            --text-color: #374151;
+            --dark-bg: #202123;
+            --dark-secondary: #343541;
+            --shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            --card-hover: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .dark-mode {
+            --secondary-color: #202123;
+            --dark-secondary: #343541;
+            --text-color: #f1f1f1;
+            --border-color: #4d4d4f;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--dark-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo h1 {
+            font-size: 1.4rem;
+            color: white;
+            font-weight: 600;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e1e1e1;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: #e1e1e1;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .action-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .action-button:hover {
+            background-color: #0d8c6d;
+            transform: translateY(-2px);
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .class-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .dark-mode .class-card {
+            background-color: var(--dark-secondary);
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+        }
+
+        .card-header {
+            height: 110px;
+            position: relative;
+            color: white;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 1.4rem;
+            max-width: 90%;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 0.4rem;
+        }
+
+        .card-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 1.2rem;
+        }
+
+        .card-body p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .card-footer span {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .notification {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Différentes couleurs pour les cartes */
+        .bg-primary {
+            background-color: #10a37f;
+        }
+
+        .bg-blue {
+            background-color: #4f46e5;
+        }
+
+        .bg-purple {
+            background-color: #8b5cf6;
+        }
+
+        .bg-orange {
+            background-color: #f59e0b;
+        }
+
+        .bg-red {
+            background-color: #ef4444;
+        }
+
+        .bg-teal {
+            background-color: #0ea5e9;
+        }
+
+        /* Modal styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 520px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            animation: modal-appear 0.3s ease;
+        }
+
+        .dark-mode .modal-content {
+            background-color: var(--dark-secondary);
+        }
+
+        @keyframes modal-appear {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-color);
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+            background-color: white;
+            color: var(--text-color);
+        }
+
+        .dark-mode .form-control {
+            background-color: #3a3b47;
+            color: #f1f1f1;
+            border-color: #4d4d4f;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.15);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0d8c6d;
+        }
+
+        /* Chat section */
+        .chat-container {
+            background-color: white;
+            border-radius: 12px;
+            height: calc(100vh - 140px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .dark-mode .chat-container {
+            background-color: var(--dark-secondary);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .chat-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .chat-back-btn,
+        .chat-settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-back-btn:hover,
+        .chat-settings-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-content {
+            display: flex;
+            height: 100%;
+        }
+
+        .user-sidebar {
+            width: 250px;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .user-sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .user-list {
+            padding: 0.5rem 0;
+        }
+
+        .user-item {
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .user-item:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-mode .user-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .user-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .user-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10b981;
+            margin-left: auto;
+        }
+
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 12px;
+            position: relative;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.other {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            border-bottom-left-radius: 4px;
+        }
+
+        .dark-mode .message.other {
+            background-color: #444654;
+            color: #f1f1f1;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            bottom: 0.3rem;
+            right: 0.5rem;
+        }
+
+        .message.other .message-time {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .dark-mode .message.other .message-time {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .chat-input {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.9rem 1rem;
+            padding-right: 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            resize: none;
+            background-color: white;
+            color: var(--text-color);
+            min-height: 50px;
+            max-height: 150px;
+            overflow-y: auto;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .dark-mode .message-input {
+            background-color: #3a3b47;
+            color: #f1f1f1;
+            border-color: #4d4d4f;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.15);
+        }
+
+        .message-actions {
+            position: absolute;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .message-action {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .message-action:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--primary-color);
+        }
+
+        .dark-mode .message-action:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .send-button {
+            background-color: var(--primary-color);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            border: none;
+        }
+
+        .send-button:hover {
+            background-color: #0d8c6d;
+            transform: scale(1.05);
+        }
+    </style>
+    <style>
+        .options-button {
+    background: transparent;
+    border: solid 1px #ddd;
+    padding:0.4em;
+    /* border-radius: 2em; */
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.options-menu {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+
+.options-menu div {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.options-menu div:hover {
+    background-color: #f0f0f0;
+}
+
+/* Boutons d'action */
+.actions {
+    display: none; /* Masqués par défaut */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    flex-direction: row; /* Aligner horizontalement */
+    gap: 5px;
+    background-color: rgba(0, 0, 0, 0.8); /* Bulle sombre */
+    padding: 5px 10px; /* Espacement interne */
+    border-radius: 15px; /* Forme de bulle arrondie */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre douce */
+}
+
+.message:hover .actions {
+    display: flex; /* Afficher lors du survol */
+}
+
+/* Styles individuels des boutons */
+.delete-button,
+.edit-button {
+    background: none;
+    border: none;
+    color: #ffffff; /* Couleur du texte blanc */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.delete-button:hover,
+.edit-button:hover {
+    color: var(--primary-color); /* Couleur primaire au survol */
+}
+
+
+    </style>
+</head>
+
+<body class="">
+    <div class="" id="username" style="display: none;">{{request.user.username}}</div>
+    <header class="header">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="color: var(--primary-color);">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <h1>WUFA</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Accueil</a>
+            <a href="#">Projets</a>
+            <a href="#">Formations</a>
+            <a href="#">Discussions</a>
+        </nav>
+        <div class="user-controls">
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-sun"></i>
+            </button>
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle text-light" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{indentifiant}}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'settings' %}">settings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+
+            <!--div class="user-avatar">{{indentifiant}}</div-->
+        </div>
+    </header>
+
+    <main class="container" id="card_section" style="display: block;">
+        <div class="page-header">
+            <h2 class="page-title merriweather">Reflexions</h2>
+            <button class="action-button" id="openPopup">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-plus">
+                    <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                Nouvelle discussion
+            </button>
+        </div>
+
+        <div class="classes-grid">
+            <!-- Carte 0 -->
+            <div class="class-card merriweather">
+                <div class="card-header bg-success">
+                    <h3 class="redressed">Propositions retenues</h3>
+                    <p class="redressed">Conseils et astuces</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Discussion sur les routines pour une peau éclatante</p>
+                </div>
+                <div class="card-footer">
+                    <span>34 participantes</span>
+                    <div class="notification">8</div>
+                </div>
+            </div>
+            {% for chat in chats %}
+            <!-- Carte 1 -->
+            <div class="class-card merriweather">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">{{chat.name}}</h3>
+                    <p class="redressed">Conseils et astuces {{chat.description}}</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Discussion sur les routines pour une peau éclatante</p>
+                </div>
+                <div class="card-footer">
+                    <span>{{chat.members}} participantes</span>
+                    <div class="notification">8</div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Carte 2 -->
+            <div class="class-card">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">autonomisation économique</h3>
+                    <p class="redressed">Inspiration du jour</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Débat sur les tendances printemps-été 2025</p>
+                </div>
+                <div class="card-footer">
+                    <span>27 participantes</span>
+                    <div class="notification">5</div>
+                </div>
+            </div>
+
+            <!-- Carte 3 -->
+            <div class="class-card">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">Maternité</h3>
+                    <p class="redressed">Soutien et témoignages</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Partage d'astuces pour équilibrer vie de maman et carrière</p>
+                </div>
+                <div class="card-footer">
+                    <span>41 participantes</span>
+                    <div class="notification">10</div>
+                </div>
+            </div>
+
+            <!-- Carte 4 -->
+            <div class="class-card">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">Accès aux ressources</h3>
+                    <p class="redressed">Échange de saveurs</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Recette rapide pour le dîner avec 5 ingrédients</p>
+                </div>
+                <div class="card-footer">
+                    <span>23 participantes</span>
+                    <div class="notification">2</div>
+                </div>
+            </div>
+
+            <!-- Carte 5 -->
+            <div class="class-card">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">Carrière et Ambitions</h3>
+                    <p class="redressed">Motivation et réussite</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Conseils pour négocier une augmentation</p>
+                </div>
+                <div class="card-footer">
+                    <span>29 participantes</span>
+                    <div class="notification">6</div>
+                </div>
+            </div>
+
+            <!-- Carte 6 -->
+            <div class="class-card">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">Plaidoyer</h3>
+                    <p class="redressed">Destinations et expériences</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Partage de souvenirs d'un voyage à Bali</p>
+                </div>
+                <div class="card-footer">
+                    <span>18 participantes</span>
+                    <div class="notification">3</div>
+                </div>
+            </div>
+            <!-- Carte 6 -->
+            <div class="class-card">
+                <div class="card-header bg-blue">
+                    <h3 class="redressed">Lobbying</h3>
+                    <p class="redressed">Destinations et expériences</p>
+                </div>
+                <div class="card-body">
+                    <p>Dernière activité: Partage de souvenirs d'un voyage à Bali</p>
+                </div>
+                <div class="card-footer">
+                    <span>18 participantes</span>
+                    <div class="notification">3</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="popup" class="popup card redressed text-center bg-secondary"
+            style="display: none; max-width: 500px; margin: auto; padding: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+            <div class="card-header">
+                <h5 class="card-title text-light redressed">Nouvelle Discussion</h5>
+            </div>
+
+
+            <div class="card-body">
+
+                <form id="popupForm">
+                    <div class="mb-3">
+
+                        <input type="text" id="title" name="title" class="form-control redressed" placeholder="Titre"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <input type="text" id="subtitle" name="subtitle" class="form-control redressed"
+                            placeholder="Brève description" required>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <input type="password" id="password" name="password" class="form-control redressed"
+                            placeholder="Mot de passe(Optionnel)">
+                    </div>
+
+                    <div class="mb-3">
+
+                        <input type="number" id="participants" name="participants" class="form-control redressed"
+                            placeholder="Nombre Max de participants" required>
+                    </div>
+
+                    <!--div class="mb-3">
+                      
+                        <input type="number" id="notifications" name="notifications" class="form-control redressed" placeholder="Nombre de notifications" required>
+                    </div-->
+
+                    <div class="d-flex justify-content-end">
+
+                        <button type="button" id="closePopup" class="btn btn-secondary redressed me-2">Annuler</button>
+                        <button type="submit" class="btn btn-primary  redressed">Créer -></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <section class="my-5" id="chat_section" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-center bg-transparent" style="height: 90vh; border: solid 0.1px white;">
+                        <div class="card-header redressed text-dark bg-secondary" style="height: 9vh;">
+                            Participants
+                        </div>
+                        <div class="card-body  ">
+                            <ol class="list-group list-group-numbered bg-secondary" id="participants-list">
+                                <!-- Les participants seront ajoutés dynamiquement -->
+                            </ol>
+                        </div>
+                        <div class="card-footer text-body-secondary ">
+                            <button id="goBack" class="btn btn-outline-secondary"><i
+                                    class="fa-solid fa-person-walking-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card text-center bg-transparent " style="height: 90vh; border: solid 0.1px white;">
+                        <div class="card-header redressed text-dark bg-secondary" id="chat_title">
+                            Chat
+                            <i class="fa-solid fa-person-walking-arrow-right"></i>
+                        </div>
+                        <div class="card-body ">
+                            <div class="chat-box overflow-auto text-dark" id="chat-messages"
+                                style="height: 400px; background-color: #f8f9fa;">
+                                <!-- Les messages seront injectés ici -->
+                            </div>
+                        </div>
+                        <div class="card-footer text-body-secondary shadow-lg">
+                            <div class="input-group mb-3">
+                                <button class="input-group-text cursor-pointer" id="file-button">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+
+                                <input id="file-input" type="file" style="display: none;" multiple />
+
+
+                                <input type="text" class="form-control" id="message-input" aria-label="Message">
+                                <span class="input-group-text btn btn-dark text-light" id="send-button">
+                                    <i class="fas fa-paper-plane me-1"></i> Envoyer
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        <script>
+            document.body.classList.toggle('dark-mode');
+            // Éléments DOM
+            const fileInput = document.getElementById('file-input');
+            const fileButton = document.getElementById('file-button');
+            const username = document.getElementById("username").innerHTML;
+            const themeToggle = document.getElementById('theme-toggle');
+            const cards = document.querySelectorAll('.class-card');
+            const goBackButton = document.getElementById("goBack");
+            const sendButton = document.getElementById('send-button');
+            const messageInput = document.getElementById('message-input');
+            const chatBox = document.getElementById('chat-messages');
+        
+            // Variables globales
+            let currentChatId = null;
+            let chatSocket = null;
+        
+            // Gestion du thème
+            themeToggle.addEventListener('click', toggleTheme);
+        
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+                const icon = document.querySelector('#theme-toggle i');
+                icon.classList.toggle('fa-sun');
+                icon.classList.toggle('fa-moon');
+            }
+        
+            // Gestion des cartes de chat
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const chatTitle = card.querySelector('h3').innerText;
+                    document.getElementById('chat_title').innerHTML = chatTitle;
+                    toggleChatVisibility(true);
+                    initializeWebSocket();
+                });
+            });
+        
+            // Bouton retour
+            goBackButton.addEventListener('click', () => {
+                toggleChatVisibility(false);
+                if (chatSocket) chatSocket.close();
+            });
+        
+            // Envoi de messages
+            sendButton.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        
+            // Gestion des fichiers
+            fileButton.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileUpload);
+        
+            function toggleChatVisibility(showChat) {
+                document.getElementById("chat_section").style.display = showChat ? 'block' : 'none';
+                document.getElementById("card_section").style.display = showChat ? "none" : "block";
+            }
+        
+            function initializeWebSocket() {
+                const wsScheme = window.location.protocol === "https:" ? "wss://" : "ws://";
+                const wsPath = wsScheme + window.location.host + "/ws/chat/";
+                
+                chatSocket = new WebSocket(wsPath);
+        
+                chatSocket.onmessage = function(e) {
+                    const data = JSON.parse(e.data);
+                    console.log('Message reçu:', data);
+                    displayMessage(data, data.sender === username ? 'user' : 'other', data.type);
+                };
+        
+                chatSocket.onclose = function(e) {
+                    console.error('Chat socket fermé de manière inattendue');
+                };
+            }
+        
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message && chatSocket) {
+                    const chatTitle = document.getElementById("chat_title").innerText;
+                    chatSocket.send(JSON.stringify({
+                        'message': message,
+                        'sender': username,
+                        'chat_title': chatTitle,
+                    }));
+                    messageInput.value = '';
+                }
+            }
+        
+            function handleFileUpload() {
+                const file = fileInput.files[0];
+                if (!file) return;
+        
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+        
+                reader.onload = () => {
+                    const chatTitle = document.getElementById("chat_title").innerText;
+                    const combinedMessage = {
+                        type: "file",
+                        file_name: file.name,
+                        file_type: file.type,
+                        sender: username,
+                        chat_title: chatTitle,
+                        file_content: reader.result
+                    };
+        
+                    chatSocket.send(JSON.stringify(combinedMessage));
+                    displayMessage({
+                        file_name: file.name,
+                        username: username,
+                        timestamp: new Date()
+                    }, 'user', 'file');
+                };
+        
+                reader.onerror = (error) => {
+                    console.error('Erreur lecture fichier:', error);
+                    alert('Erreur lors de la lecture du fichier.');
+                };
+            }
+        
+            function displayMessage(content, sender, type = 'text') {
+                const messageElement = document.createElement('div');
+                const timeStamp = new Date(content.timestamp || Date.now()).toLocaleTimeString();
+                
+                messageElement.classList.add('message', sender);
+                messageElement.innerHTML = `
+                    <div class="user-section">
+                        <img src="${content.profile_picture || 'https://st5.depositphotos.com/60679122/63445/v/450/depositphotos_634452952-stock-illustration-anonymous-person-icon-editable-vector.jpg'}" 
+                             alt="${content.username || 'User'} profile" class="profile-picture">
+                        <span class="username">${content.username || username}</span>
+                    </div>
+                    <div class="content-section">
+                        ${type === 'text' 
+                            ? `<p class="message-text text-dark">${content.message}</p>` 
+                            : `<a href="${content.file_url || '#'}" class="message-file" target="_blank">
+                                  📄 ${content.file_name || 'Fichier'}
+                               </a>`
+                        }
+                        <span class="timestamp">${timeStamp}</span>
+                    </div>
+                   
+                `;
+        
+                // Gestion des options
+               
+        
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        
+            function showOptionsMenu(event, content) {
+                event.stopPropagation();
+                
+                const menu = document.createElement('div');
+                menu.className = 'options-menu';
+                menu.style.position = 'fixed';
+                menu.style.top = `${event.clientY}px`;
+                menu.style.left = `${event.clientX}px`;
+                
+                const options = [
+                    { text: 'Modifier', action: () => editMessage(content) },
+                    { text: 'Supprimer', action: () => deleteMessage(content) }
+                ];
+        
+                options.forEach(option => {
+                    const div = document.createElement('div');
+                    div.textContent = option.text;
+                    div.addEventListener('click', option.action);
+                    menu.appendChild(div);
+                });
+        
+                document.body.appendChild(menu);
+        
+                // Fermeture du menu
+                const closeMenu = () => {
+                    document.body.removeChild(menu);
+                    window.removeEventListener('click', closeMenu);
+                };
+                window.addEventListener('click', closeMenu);
+            }
+        
+            function editMessage(content) {
+                const newText = prompt('Modifiez votre message :', content.message);
+                if (newText && chatSocket) {
+                    chatSocket.send(JSON.stringify({
+                        action: 'edit',
+                        messageId: content.messageId,
+                        newMessage: newText,
+                        sender: username,
+                        chat_title: content.chat_title
+                    }));
+                }
+            }
+        
+            function deleteMessage(content) {
+                if (chatSocket) {
+                    chatSocket.send(JSON.stringify({
+                        action: 'delete',
+                        messageId: content.messageId,
+                        chat_title: content.chat_title
+                    }));
+                }
+            }
+        </script>
+        
+</body>
+
+</html>

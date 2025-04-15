@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appel Audio - {{ channel_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .join-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .leave-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .mute-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .user-list {
+            margin-top: 20px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Appel Audio: {{ channel_name }}</h1>
+        
+        <div class="user-list">
+            <h3>Participants</h3>
+            <ul id="users">
+                <li>En attente des participants...</li>
+            </ul>
+        </div>
+        
+        <div class="controls">
+            <button id="join-btn" class="btn join-btn">Rejoindre l'appel</button>
+            <button id="leave-btn" class="btn leave-btn" disabled>Quitter l'appel</button>
+            <button id="mute-btn" class="btn mute-btn" disabled>Couper le micro</button>
+        </div>
+    </div>
+
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+    <script>
+        const APP_ID = '{{ app_id }}';
+        const CHANNEL = '{{ channel_name }}';
+        const UID = {{ uid }};
+        let TOKEN = null;
+        
+        let client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+        let localTracks = {
+            audioTrack: null
+        };
+        let remoteUsers = {};
+        let isMuted = false;
+        
+        // Boutons
+        const joinBtn = document.getElementById('join-btn');
+        const leaveBtn = document.getElementById('leave-btn');
+        const muteBtn = document.getElementById('mute-btn');
+        const usersList = document.getElementById('users');
+        
+        // Récupérer le token depuis le serveur
+        const fetchToken = async () => {
+            const response = await fetch(`/api/token/?channel=${CHANNEL}&uid=${UID}`);
+            const data = await response.json();
+            return data.token;
+        };
+        
+        // Fonction pour rejoindre le canal
+        const joinChannel = async () => {
+            try {
+                TOKEN = await fetchToken();
+                
+                // Joindre le canal
+                await client.join(APP_ID, CHANNEL, TOKEN, UID);
+                
+                // Créer et publier la piste audio
+                localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+                await client.publish(localTracks.audioTrack);
+                
+                // Mettre à jour l'interface
+                updateUsersList();
+                joinBtn.disabled = true;
+                leaveBtn.disabled = false;
+                muteBtn.disabled = false;
+                
+                console.log('Connexion à l\'appel réussie!');
+            } catch (error) {
+                console.error('Erreur lors de la connexion:', error);
+            }
+        };
+        
+        // Fonction pour quitter le canal
+        const leaveChannel = async () => {
+            // Arrêter et fermer les pistes locales
+            if (localTracks.audioTrack) {
+                localTracks.audioTrack.stop();
+                localTracks.audioTrack.close();
+            }
+            
+            // Quitter le canal
+            await client.leave();
+            
+            // Mettre à jour l'interface
+            joinBtn.disabled = false;
+            leaveBtn.disabled = true;
+            muteBtn.disabled = true;
+            muteBtn.textContent = 'Couper le micro';
+            isMuted = false;
+            
+            console.log('Déconnexion de l\'appel réussie');
+        };
+        
+        // Fonction pour couper/rétablir le micro
+        const toggleMute = () => {
+            if (localTracks.audioTrack) {
+                if (isMuted) {
+                    localTracks.audioTrack.setEnabled(true);
+                    muteBtn.textContent = 'Couper le micro';
+                    isMuted = false;
+                } else {
+                    localTracks.audioTrack.setEnabled(false);
+                    muteBtn.textContent = 'Activer le micro';
+                    isMuted = true;
+                }
+            }
+        };
+        
+        // Fonction pour mettre à jour la liste des utilisateurs
+        const updateUsersList = () => {
+            usersList.innerHTML = '';
+            
+            // Ajouter l'utilisateur local
+            const localUserItem = document.createElement('li');
+            localUserItem.textContent = `Vous (UID: ${UID})${isMuted ? ' (micro coupé)' : ''}`;
+            usersList.appendChild(localUserItem);
+            
+            // Ajouter les utilisateurs distants
+            for (const uid in remoteUsers) {
+                const remoteUserItem = document.createElement('li');
+                remoteUserItem.textContent = `Utilisateur: ${uid}`;
+                usersList.appendChild(remoteUserItem);
+            }
+        };
+        
+        // Événements pour les utilisateurs distants
+        client.on('user-published', async (user, mediaType) => {
+            await client.subscribe(user, mediaType);
+            
+            if (mediaType === 'audio') {
+                remoteUsers[user.uid] = user;
+                user.audioTrack.play();
+                updateUsersList();
+            }
+        });
+        
+        client.on('user-unpublished', (user, mediaType) => {
+            if (mediaType === 'audio') {
+                if (remoteUsers[user.uid]) {
+                    delete remoteUsers[user.uid];
+                    updateUsersList();
+                }
+            }
+        });
+        
+        client.on('user-left', (user) => {
+            if (remoteUsers[user.uid]) {
+                delete remoteUsers[user.uid];
+                updateUsersList();
+            }
+        });
+        
+        // Événements des boutons
+        joinBtn.addEventListener('click', joinChannel);
+        leaveBtn.addEventListener('click', leaveChannel);
+        muteBtn.addEventListener('click', toggleMute);
+    </script>
+</body>
+</html>

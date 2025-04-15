@@ -1,0 +1,954 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
+
+  <title>Wufa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/ca00bf51a9.js" crossorigin="anonymous"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Slab:wght@100..900&display=swap');
+
+    /* === Variables CSS === */
+    :root {
+      --background-dark: #0f0f0f;
+      --text-light: #f5f5f5;
+      --shadow-light: rgba(0, 0, 0, 0.3);
+      --hover-bg: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.15);
+      --accent-color: #007bff;
+      --hover-accent: #0056b3;
+      --timestamp-color: #bbbbbb;
+      --menu-bg: #1e1e1e;
+      --menu-border: #444;
+    }
+
+    .logo {
+    width: 50px; /* Spécifiez la largeur du logo */
+    height: auto; /* Conserve les proportions */
+}
+
+
+    /* === Polices === */
+    .oswald {
+      font-family: "Oswald", sans-serif;
+    }
+
+    .roboto-slab {
+      font-family: "Roboto Slab", serif;
+    }
+
+    /* === Corps de la page === */
+    body {
+      background-color: var(--background-dark);
+      color: var(--text-light);
+      font-family: "Roboto Slab", serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* === Zone principale === */
+    .card-element {
+      height: 85vh;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 1px rgba(219, 208, 208, 0.5);
+      overflow-y: auto;
+    }
+
+    /* === Liste utilisateurs === */
+    .user-list {
+      list-style: none;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* === Message utilisateur === */
+    .user-message {
+      position: relative;
+      max-width: 70%;
+      width: fit-content;
+      background: var(--hover-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 16px;
+      margin-left: auto;
+      color: var(--text-light);
+      transition: all 0.3s ease-in-out;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 12px var(--shadow-light);
+    }
+
+    .user-message:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* === Nom + avatar === */
+    .user-message h6 {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+
+    .user-message .btn-light {
+      padding: 4px 6px;
+      border-radius: 50%;
+    }
+
+    /* === Contenu du message === */
+    .message-content {
+      font-size: 1rem;
+      word-wrap: break-word;
+      margin-bottom: 10px;
+      font-weight: 200;
+    }
+
+    /* === Timestamp du message (date et heure) === */
+    .timestamp {
+      font-size: 0.75rem;
+      color: var(--timestamp-color);
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+    }
+
+    /* === Menu contextuel === */
+    .menu-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: none;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 10;
+    }
+
+    .user-message:hover .menu-container {
+      display: flex;
+    }
+
+    .three-dots {
+      cursor: pointer;
+      font-size: 18px;
+      color: #ffffff;
+      padding-left: 10px;
+      padding-right: 10px;
+      transition: color 0.2s ease-in-out;
+      background-color: #070707;
+      box-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+    }
+
+    .three-dots:hover {
+      color: #cccccc;
+    }
+
+    .menu-options {
+      position: absolute;
+      top: 25px;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      background-color: var(--menu-bg);
+      border: 1px solid var(--menu-border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      z-index: 20;
+    }
+
+    .menu-container:hover .menu-options {
+      display: flex;
+    }
+
+    .menu-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu-item:hover {
+      background-color: #333;
+    }
+
+    /* === Fichiers envoyés === */
+    .remote-user-file {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+      margin-top: 5px;
+    }
+
+    .remote-user-file .user-message {
+      background: var(--shadow-light);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 3px 8px var(--shadow-light);
+      backdrop-filter: blur(4px);
+      color: var(--text-light);
+    }
+
+    .remote-user-file .file-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      overflow: hidden;
+    }
+
+    .remote-user-file .file-item i {
+      font-size: 30px;
+    }
+
+    .remote-user-file .file-item span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 180px;
+      display: inline-block;
+    }
+
+    .remote-user-file .download-btn {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background-color: var(--accent-color);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      display: none;
+      cursor: pointer;
+    }
+
+    .remote-user-file:hover .download-btn {
+      display: block;
+    }
+
+    .remote-user-file .download-btn:hover {
+      background-color: var(--hover-accent);
+    }
+
+
+    /* === Style pour le message entrant === */
+    .message-row {
+      display: flex;
+      justify-content: flex-start;
+      /* Affiche à gauche */
+      margin-bottom: 15px;
+      margin-top: 5px;
+    }
+
+    .incoming-message {
+      position: relative;
+      max-width: 70%;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      color: #ffffff;
+      word-wrap: break-word;
+    }
+
+    .incoming-message:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .message-content-wrapper {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h6 {
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      margin-bottom: 5px;
+    }
+
+    .btn-avatar {
+      padding: 4px 6px;
+      border-radius: 50%;
+      /* background: none;
+      border: none; */
+      display: flex;
+      align-items: center;
+    }
+
+    .message-content {
+      font-size: 1rem;
+      word-wrap: break-word;
+      margin-bottom: 10px;
+    }
+
+    .timestamp {
+      font-size: 0.75rem;
+      color: #bbbbbb;
+      margin-top: 5px;
+      text-align: right;
+      /* Aligner le timestamp à droite */
+    }
+  </style>
+ 
+
+</head>
+
+<body>
+  <div class="" id="username" style="display: none;">{{request.user.username}}</div>
+  <!--header   -->
+  {% include 'header.html' %}
+ 
+  <!--end header   -->
+
+  <!--main   -->
+  <main>
+
+
+    <!-- <section>
+      <div class="container">
+        <h1>Appels Audio avec Agora</h1>
+    
+        {% if user.is_authenticated %}
+            <div>
+                <h2>Créer un nouvel appel</h2>
+                <form action="{% url 'create_call' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Démarrer un appel</button>
+                </form>
+            </div>
+            
+            <div>
+                <h2>Appels actifs</h2>
+                {% if active_calls %}
+                    <ul>
+                        {% for call in active_calls %}
+                            <li>
+                                <a href="{% url 'call_room' call.channel_name %}">
+                                    Appel de {{ call.creator.username }} ({{ call.started_at|date:"H:i" }})
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucun appel actif pour le moment.</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>Veuillez vous connecter pour accéder aux appels audio.</p>
+        {% endif %}
+      </div>
+    </section> -->
+   
+    <div class="row mt-3 p-3" style="font-family: oswald, sans-serif;">
+      <div class="col-md-3  ">
+        <div class="card card-element text-light">
+          <div class="card-header text-center">
+            <h4 class="card-title">Utilisateurs</h4>
+          </div>
+          <div class="card-body text-start">
+            <ul id="user-list" class="p-0 m-0">
+              <!-- Les utilisateurs seront ajoutés ici dynamiquement par fetchChatUsers() -->
+            </ul>
+          </div>
+        </div>
+       
+        
+      </div>
+      <div class="col-md-9">
+        <div class="card card-element text-light">
+
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 id="room-name" class="m-0">Discussion</h4>
+           
+            <div>
+              <button class="btn btn-secondary me-2 border-white"><i class="fa-solid fa-phone-flip"></i></button>
+              <a class="btn btn-secondary border-white" href="{% url 'index' %}"><i class="fa-solid fa-xmark"></i></a>
+            </div>
+          </div>
+
+          <div class="card-body p-4" id="chat-scroll" style="overflow-y: auto;">
+            <div id="chat-box" style="min-height: 100%">
+
+
+
+            </div>
+
+          </div>
+
+          <div class="card-footer " style="border:none">
+            <div class="input-group mb-3 border-0 " style="box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); border-radius: 10px; padding:10px">
+              <span class="input-group-text" style="background-color: rgba(0,0,0, 0.7); border:none; border-radius: 10px;">
+                <a href="#" id="file-clip" class="btn btn-light"><i class="fa-solid fa-paperclip"></i></a>
+                <input type="file" id="input-file" style="display:none">
+              </span>
+              <div class="form-floating border-0" style="border:none">
+                <input type="text" id="input-message" class="form-control bg-transparent text-light"
+                  id="floatingInputGroup1" placeholder="Message" style="margin: 0; border:none;">
+                <!-- <label for="floatingInputGroup1">Message</label> -->
+              </div>
+              <span class="input-group-text" style="background-color: rgba(0,0,0, 0.7); border:none">
+                <button id="send-button" class="btn btn-primary"><i class="fa-solid fa-arrow-up"></i></button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!--end main   -->
+
+  <!--footer   -->
+  <footer>
+
+  </footer>
+  <!--e nd footer   -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+    crossorigin="anonymous"></script>
+
+  <script>
+    const chatbox = document.getElementById('chat-box');
+    const chatscroll = document.getElementById('chat-scroll');
+    const username = "{{ request.user.username }}";
+    const fileInput = document.getElementById('input-file');
+
+    const currentDate = new Date();
+    const date = currentDate.toLocaleDateString('fr-FR');
+    const time = currentDate.toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+
+    const roomName = document.getElementById('room-name').textContent;
+
+    const chatSocket = new WebSocket(
+      `ws://${window.location.host}/ws/chat/${roomName}/?username=${username}`
+    );
+
+    document.getElementById('send-button').addEventListener('click', (e) => {
+      const userMessage = document.getElementById('input-message').value.trim();
+      if (!userMessage) return;
+
+      const userDiv = document.createElement('div');
+      userDiv.innerHTML = `
+  <div class="row justify-content-end align-items-end my-2">
+    <div class="user-message position-relative">
+      <div class="menu-container">
+        <div class="three-dots">⋮</div>
+        <div class="menu-options">
+          <div class="menu-item edit-msg">Edit</div>
+          <div class="menu-item delete-msg">Delete</div>
+        </div>
+      </div>
+      <div>
+        <h6>${username} 
+          <button class="btn btn-light">
+            <i class="fa-regular fa-circle-user"></i>
+          </button>
+        </h6>
+        <div class="message-content">${userMessage}</div>
+        <div class="timestamp">${date} ${time}</div>
+      </div>
+    </div>                  
+  </div>
+`;
+      chatbox.appendChild(userDiv);
+
+      userDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+      document.getElementById('input-message').value = '';
+      chatSocket.send(JSON.stringify({
+        room_name: roomName,
+        message: userMessage,
+        username: username,
+      }));
+
+      // GESTION DU MENU "3 POINTS"
+      const threeDots = userDiv.querySelector('.three-dots');
+      const menuOptions = userDiv.querySelector('.menu-options');
+      const editBtn = userDiv.querySelector('.edit-msg');
+      const deleteBtn = userDiv.querySelector('.delete-msg');
+      const messageContent = userDiv.querySelector('.message-content');
+
+      threeDots.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuOptions.style.display = (menuOptions.style.display === 'flex') ? 'none' : 'flex';
+      });
+
+      editBtn.addEventListener('click', () => {
+        const newMessage = prompt("Modifier le message :", messageContent.textContent);
+        if (newMessage !== null) {
+          messageContent.textContent = newMessage;
+        }
+        menuOptions.style.display = 'none';
+      });
+
+      deleteBtn.addEventListener('click', () => {
+        userDiv.remove();
+      });
+
+      // Fermer le menu si on clique ailleurs
+      document.addEventListener('click', function handler(event) {
+        if (!userDiv.contains(event.target)) {
+          menuOptions.style.display = 'none';
+          document.removeEventListener('click', handler);
+        }
+      });
+    });
+
+    document.getElementById('input-message').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('send-button').click();
+      }
+    });
+
+    // Réception des messages
+    chatSocket.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.username !== username) {
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
+
+        if (data.action === 'new_file') {
+          // Message avec fichier
+          const fileDiv = document.createElement('div');
+          fileDiv.classList.add('remote-user-file');
+          fileDiv.innerHTML = `
+        <div class="user-message">
+          <div class="p-2">
+            <h6>${data.username}
+              <button class="btn btn-light">
+                <i class="fa-regular fa-circle-user"></i>
+              </button>
+            </h6>
+            <ul style="margin-bottom: 0;">
+              <li class="file-item">
+                <i class="fa ${getFileIcon(data.file_type)}"></i> 
+                <span>${data.file_name}</span>
+              </li>
+              <li class="timestamp">${date} ${time}</li>
+            </ul>
+            <a href="${data.file_url}" download="${data.file_name}" class="download-btn"><i class="fa-solid fa-download"></i></a>
+          </div>
+        </div>
+      `;
+          chatbox.appendChild(fileDiv);
+        } else {
+          // Message texte
+          const userDiv = document.createElement('div');
+
+          userDiv.innerHTML = `
+  <div class="message-row">
+    <div class="incoming-message">
+      <div class="message-content-wrapper">
+        <h6 class='mt-2'>
+          <button class="btn-avatar">
+            <i class="fa-regular fa-circle-user"></i>
+          </button>
+          ${data.username}
+        </h6>
+        <div class="message-content">${data.message}</div>
+        <div class="timestamp">${date} ${time}</div>
+      </div>
+    </div>
+  </div>
+`;
+          chatbox.appendChild(userDiv);
+
+
+        }
+      }
+    };
+
+    chatSocket.onclose = (e) => {
+      console.error('Chat socket closed unexpectedly');
+      alert('La connexion au serveur de chat a été interrompue.');
+    };
+
+    document.getElementById('file-clip').addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', handleFileUpload);
+
+    function handleFileUpload() {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const combinedMessage = {
+          type: "file",
+          file_name: file.name,
+          file_type: file.type,
+          username: username,
+          room_name: roomName,
+          file_content: reader.result
+        };
+        chatSocket.send(JSON.stringify(combinedMessage));
+
+        const fileDiv = document.createElement('div');
+        fileDiv.classList.add('remote-user-file'); // Utilisation de la classe définie pour l'affichage du fichier
+        fileDiv.innerHTML = `
+  <div class="row justify-content-end align-items-end my-2">
+    <div class="user-message">
+      <div class="p-2">
+        <h6>${username}
+          <button class="btn btn-light">
+            <i class="fa-regular fa-circle-user"></i>
+          </button>
+        </h6>
+        <ul style="margin-bottom: 0;">
+          <li class="file-item">
+            <i class="fa ${getFileIcon(file.type)}"></i> 
+            <span>${truncateText(file.name)}</span> <!-- Appel à la fonction truncateText -->
+          </li>
+          <li class="timestamp">${date} ${time}</li>
+        </ul>
+        <a href="${file.url}" download="${file.name}" class="download-btn"><i class="fa-solid fa-download"></i></a>
+      </div>
+    </div>
+  </div>
+`;
+
+        chatbox.appendChild(fileDiv);
+        fileDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+
+      };
+
+      reader.onerror = (error) => {
+        console.error('Erreur de lecture du fichier:', error);
+        alert('Erreur lors de la lecture du fichier.');
+      };
+    }
+
+    function getFileIcon(fileType) {
+      if (fileType.includes("image")) return "fa-file-image";
+      if (fileType.includes("audio")) return "fa-file-audio";
+      if (fileType.includes("video")) return "fa-file-video";
+      if (fileType.includes("pdf")) return "fa-file-pdf";
+      if (fileType.includes("text")) return "fa-file-alt";
+      return "fa-file";
+    }
+    // Fonction pour tronquer le texte (nom du fichier)
+    function truncateText(text, maxLength = 30) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';  // Tronque le texte et ajoute "..."
+      }
+      return text;
+    }
+
+    function fetchChatUsers() {
+  const userList = document.getElementById('user-list');
+
+  if (!userList) {
+    console.error("Élément #user-list introuvable dans le DOM.");
+    return;
+  }
+
+  fetch('/get_chat_users/')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      userList.innerHTML = '';
+      console.log("Utilisateurs connectés :", data);
+
+      data.users.forEach(user => {
+        const li = document.createElement('li');
+        li.className = 'my-3 user-list d-flex align-items-center justify-content-between';
+
+        const userContent = document.createElement('div');
+        userContent.className = 'd-flex align-items-center';
+
+        const icon = document.createElement('i');
+        icon.className = 'fa-regular fa-circle-user me-2';
+
+        const usernameSpan = document.createElement('span');
+        usernameSpan.textContent = user.username;
+
+        userContent.appendChild(icon);
+        userContent.appendChild(usernameSpan);
+
+        const statusDot = document.createElement('span');
+        statusDot.style.width = '10px';
+        statusDot.style.height = '10px';
+        statusDot.style.borderRadius = '50%';
+        statusDot.style.marginLeft = '10px';
+        statusDot.style.display = 'inline-block';
+        statusDot.style.backgroundColor = user.is_active ? 'limegreen' : 'gray';
+
+        li.appendChild(userContent);
+        li.appendChild(statusDot);
+        userList.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error('Erreur lors du chargement des utilisateurs :', error);
+      const li = document.createElement('li');
+      li.textContent = "Impossible de charger les utilisateurs.";
+      userList.appendChild(li);
+    });
+}
+
+  // Mettre à jour toutes les 10 secondes
+  setInterval(fetchChatUsers, 1000);
+  // Charger au démarrage
+  fetchChatUsers();
+
+  </script>
+
+
+
+<script>
+  // Script pour rendre le chat responsive avec une sidebar pliable
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Ajout du bouton toggle pour la sidebar dans le header
+  const cardHeader = document.querySelector('.card-header');
+  const toggleButton = document.createElement('button');
+  toggleButton.id = 'toggle-sidebar';
+  toggleButton.className = 'btn btn-outline-light me-2 d-md-none';
+  toggleButton.innerHTML = '<i class="fa-solid fa-bars"></i>';
+  
+  // Insérer le bouton au début du header
+  if (cardHeader) {
+    cardHeader.insertBefore(toggleButton, cardHeader.firstChild);
+  }
+  
+  // Référence à la colonne contenant les utilisateurs
+  const userColumn = document.querySelector('.col-md-3');
+  const chatColumn = document.querySelector('.col-md-9');
+  
+  // État initial de la sidebar sur mobile
+  let sidebarVisible = false;
+  
+  // Ajout des classes pour le comportement responsive
+  if (userColumn && chatColumn) {
+    userColumn.classList.add('sidebar');
+    
+    // Styles CSS pour la sidebar
+    const style = document.createElement('style');
+    style.textContent = `
+      @media (max-width: 767.98px) {
+        .sidebar {
+          position: fixed;
+          left: -100%;
+          top: 0;
+          width: 80%;
+          height: 100%;
+          z-index: 1000;
+          background-color: var(--background-dark);
+          transition: all 0.3s ease;
+          padding: 15px;
+          overflow-y: auto;
+        }
+        
+        .sidebar.visible {
+          left: 0;
+        }
+        
+        .col-md-9 {
+          width: 100%;
+        }
+        
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+          display: none;
+        }
+        
+        .overlay.visible {
+          display: block;
+        }
+      }
+      
+      /* Ajouter un bouton pour basculer la sidebar en mode desktop */
+      @media (min-width: 768px) {
+        #toggle-sidebar-desktop {
+          position: fixed;
+          left: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 1000;
+          background-color: var(--menu-bg);
+          border: 1px solid var(--border-light);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        
+        #toggle-sidebar-desktop:hover {
+          background-color: var(--hover-bg);
+        }
+        
+        .sidebar.collapsed {
+          transform: translateX(-100%);
+          width: 0;
+          padding: 0;
+          margin: 0;
+          overflow: hidden;
+        }
+        
+        .sidebar {
+          transition: all 0.3s ease;
+        }
+        
+        .col-md-9.expanded {
+          width: 100%;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Créer un overlay pour fermer la sidebar en cliquant en dehors
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    document.body.appendChild(overlay);
+    
+    // Créer un bouton pour le mode desktop
+    const toggleDesktopButton = document.createElement('button');
+    toggleDesktopButton.id = 'toggle-sidebar-desktop';
+    toggleDesktopButton.className = 'btn btn-outline-light d-none d-md-flex';
+    toggleDesktopButton.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+    document.body.appendChild(toggleDesktopButton);
+    
+    // Basculer la sidebar sur mobile
+    toggleButton.addEventListener('click', function() {
+      sidebarVisible = !sidebarVisible;
+      userColumn.classList.toggle('visible', sidebarVisible);
+      overlay.classList.toggle('visible', sidebarVisible);
+    });
+    
+    // Fermer la sidebar lorsqu'on clique sur l'overlay
+    overlay.addEventListener('click', function() {
+      sidebarVisible = false;
+      userColumn.classList.remove('visible');
+      overlay.classList.remove('visible');
+    });
+    
+    // Variable pour suivre l'état de la sidebar en mode desktop
+    let desktopSidebarVisible = true;
+    
+    // Basculer la sidebar sur desktop
+    toggleDesktopButton.addEventListener('click', function() {
+      desktopSidebarVisible = !desktopSidebarVisible;
+      userColumn.classList.toggle('collapsed', !desktopSidebarVisible);
+      chatColumn.classList.toggle('expanded', !desktopSidebarVisible);
+      
+      // Changement de l'icône selon l'état
+      toggleDesktopButton.innerHTML = desktopSidebarVisible ? 
+        '<i class="fa-solid fa-chevron-left"></i>' : 
+        '<i class="fa-solid fa-chevron-right"></i>';
+    });
+    
+    // Ajuster l'interface en fonction de la taille de l'écran
+    function adjustLayout() {
+      if (window.innerWidth < 768) {
+        // Mobile: réinitialiser l'état de la sidebar
+        userColumn.classList.remove('collapsed');
+        chatColumn.classList.remove('expanded');
+        userColumn.classList.toggle('visible', sidebarVisible);
+        overlay.classList.toggle('visible', sidebarVisible);
+      } else {
+        // Desktop: appliquer l'état desktop
+        userColumn.classList.toggle('collapsed', !desktopSidebarVisible);
+        chatColumn.classList.toggle('expanded', !desktopSidebarVisible);
+        userColumn.classList.remove('visible');
+        overlay.classList.remove('visible');
+      }
+    }
+    
+    // Appliquer le layout initial
+    adjustLayout();
+    
+    // Ajuster le layout lors du redimensionnement de la fenêtre
+    window.addEventListener('resize', adjustLayout);
+  }
+  
+  // Optimisation de la hauteur des chat-scroll pour différentes tailles d'écran
+  function adjustChatHeight() {
+    const chatScroll = document.getElementById('chat-scroll');
+    if (chatScroll) {
+      const windowHeight = window.innerHeight;
+      const headerHeight = document.querySelector('header') ? document.querySelector('header').offsetHeight : 0;
+      const cardHeaderHeight = document.querySelector('.card-header') ? document.querySelector('.card-header').offsetHeight : 0;
+      const cardFooterHeight = document.querySelector('.card-footer') ? document.querySelector('.card-footer').offsetHeight : 0;
+      const padding = 40; // Pour tenir compte du padding et marges
+      
+      const idealHeight = windowHeight - headerHeight - cardHeaderHeight - cardFooterHeight - padding;
+      chatScroll.style.height = `${idealHeight}px`;
+    }
+  }
+  
+  // Ajuster la hauteur au chargement et lors du redimensionnement
+  adjustChatHeight();
+  window.addEventListener('resize', adjustChatHeight);
+});
+
+// Améliorer l'UX pour les messages et le scrolling
+function improveMessagingUX() {
+  const inputMessage = document.getElementById('input-message');
+  const chatScroll = document.getElementById('chat-scroll');
+  
+  // Scroll automatique vers le bas lors de l'ajout de nouveaux messages
+  const observer = new MutationObserver(() => {
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+  });
+  
+  observer.observe(document.getElementById('chat-box'), {
+    childList: true,
+    subtree: true
+  });
+  
+  // Focus sur l'input au chargement
+  if (inputMessage) {
+    inputMessage.focus();
+  }
+}
+
+// Exécuter après le chargement du DOM
+document.addEventListener('DOMContentLoaded', improveMessagingUX);
+</script>
+
+
+</body>
+
+</html>

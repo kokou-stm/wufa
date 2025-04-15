@@ -187,7 +187,7 @@ def register(request):
 
                     #emailsender(subject, email_message, email_address,  user.email)
 
-                    mess = f"Welcome, {prenom}! Your account has been successfully created. To activate your account, please retrieve your verification code from the email sent to {user.email}"
+                    mess = f"Welcome, {prenom}! Your account has been successfully created" #. To activate your account, please retrieve your verification code from the email sent to {user.email}"
                         
                     messages.info(request, mess)
 
@@ -272,7 +272,7 @@ def register(request):
 
                     #emailsender(subject, email_message, email_address, user.email)
                                     
-                    return redirect("code")
+                    return redirect("login")
             except Exception as e:
                     print("error: ", type(e), e)
                     #err = " ".join(e)

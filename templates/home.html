@@ -443,7 +443,7 @@
     const roomName = document.getElementById('room-name').textContent;
 
     const chatSocket = new WebSocket(
-      `ws://${window.location.host}/ws/chat/${roomName}/?username=${username}`
+      `wss://${window.location.host}/ws/chat/${roomName}/?username=${username}`
     );
 
     document.getElementById('send-button').addEventListener('click', (e) => {

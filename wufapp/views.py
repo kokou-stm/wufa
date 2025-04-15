@@ -338,7 +338,7 @@ def connection(request):
                     print("Utilisateur infos: ", auth_user.username, auth_user.email)
                     login(request, auth_user)
                     
-                    return redirect("home")
+                    return redirect("index")
                 else :
                     mess = "Incorrect password"
             else:

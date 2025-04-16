@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-f!3gxmf+%7c*mck9iam0h&i6g7+8)+h^*wjp00b622yc#d)k3e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = ["wufa.africa", "wufachat.c3c9ehggdbd4g4cd.eastus.azurecontainer.io","voicetovoice.fr","6df5-46-193-67-154.ngrok-free.app","4e74-193-50-192-71.ngrok-free.app","localhost", "127.0.0.1", "chefquizapp.e8hsdyh2c8h6efa5.eastus.azurecontainer.io", "aivoicedubber.com"]#cae4-193-50-192-71.ngrok-free.app", 
+CSRF_TRUSTED_ORIGINS =["https://*.wufa.africa","https://*.voicetovoice.fr","https://*.6df5-46-193-67-154.ngrok-free.app","https://*.4e74-193-50-192-71.ngrok-free.app","http://*.127.0.0.1","http://*.localhost", "http://*.chefquizapp.e8hsdyh2c8h6efa5.eastus.azurecontainer.io", "https://*.aivoicedubber.com"]
+CORS_ORIGIN_ALLOW_ALL =True
 
 
 # Application definition
@@ -171,3 +174,4 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+

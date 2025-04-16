@@ -1213,10 +1213,195 @@
         }
    
    </style>
+   <style>
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1.5rem;
+        background-color: var(--dark-bg);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .logo h1 {
+        font-size: 1.4rem;
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    .nav-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .nav-links a {
+        text-decoration: none;
+        color: #e1e1e1;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 0.5rem 0;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+    .nav-links a:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--primary-color);
+        transition: width 0.3s ease;
+    }
+    .nav-links a:hover {
+        color: white;
+    }
+    .nav-links a:hover:after {
+        width: 100%;
+    }
+    .user-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .theme-toggle {
+        background: none;
+        border: none;
+        color: #e1e1e1;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0.3rem;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+    .theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .user-avatar:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Hamburger menu styles */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 101;
+    }
+    
+    .hamburger span {
+        width: 100%;
+        height: 3px;
+        background-color: white;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        .hamburger {
+            display: flex;
+        }
+        
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            height: 100vh;
+            flex-direction: column;
+            background-color: var(--dark-bg);
+            padding-top: 70px;
+            padding-left: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links.active {
+            right: 0;
+        }
+        
+        .nav-links a {
+            font-size: 1.2rem;
+            padding: 1rem 0;
+        }
+        
+        .user-controls {
+            margin-left: auto;
+        }
+        
+        /* Animation for hamburger to X */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+        
+        /* Overlay when menu is open */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .logo h1 {
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            width: 85%;
+        }
+    }
+</style>
 </head>
 
 <body class="">
     <div class="" id="username" style="display: none;">{{request.user.username}}</div>
+    <div class="overlay" id="overlay"></div>
     <header class="header">
         <div class="logo">
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
@@ -1228,17 +1413,24 @@
             <img class="logo" src="{% static 'img/logo.png' %}" alt="Logo">
             <h1>WUFA</h1>
         </div>
-        <nav class="nav-links">
-            <a href="#">Accueil</a>
+        
+        <button class="hamburger" id="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <nav class="nav-links" id="nav-links">
+            <a href="{% url 'home' %}">Accueil</a>
             <a href="#">Projets</a>
             <a href="#">Formations</a>
             <a href="#">Discussions</a>
         </nav>
+        
         <div class="user-controls">
             <button class="theme-toggle" id="theme-toggle">
                 <i class="fas fa-sun"></i>
             </button>
-
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle text-light" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -1250,8 +1442,6 @@
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             </div>
-
-            <!--div class="user-avatar">{{indentifiant}}</div-->
         </div>
     </header>
 
@@ -1947,6 +2137,60 @@ document.head.insertAdjacentHTML('beforeend', `
         }
     </style>
 `);
+</script>
+
+<script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', toggleTheme);
+    
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.querySelector('#theme-toggle i');
+        icon.classList.toggle('fa-sun');
+        icon.classList.toggle('fa-moon');
+    }
+    
+    // Hamburger menu functionality
+    const hamburger = document.getElementById('hamburger-menu');
+    const navLinks = document.getElementById('nav-links');
+    const overlay = document.getElementById('overlay');
+    
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+    });
+    
+    // Close menu when clicking on overlay
+    overlay.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+    
+    // Close menu when clicking on a link
+    const navItems = document.querySelectorAll('.nav-links a');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+    
+    // Close menu on window resize if it's open
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
 </script>
 </body>
 

@@ -3,3 +3,4 @@ channels==4.0.0
 daphne
 Pillow
 agora-token-builder==1.0.0
+psycopg[binary]

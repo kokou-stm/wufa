@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('chat/', home, name='home'),
-    path('', index, name='index'),
+    path('index/', index, name='index'),
      path('login/', connection, name='login'),
     path('register/', register, name='register'),
     path('logout/', deconnexion, name='logout'),
@@ -20,6 +20,10 @@ urlpatterns = [
      path("online_users/", online_users, name="online_users"),
      path('get_chat_users/', get_chat_users, name='get_chat_users'),
        path('create_chat/', create_chat, name='create_chat'),
+       path("", first_page, name="first_page"),
+       path("projets/", projets, name="projets"),
+       path("gardentalks/", gardentalks, name="gardentalks"),
+       
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

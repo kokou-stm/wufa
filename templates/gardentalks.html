@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 {% load static %}
 <html lang="fr">
@@ -9,7 +10,7 @@
     <title>Garden Talks - WUFA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-     <style>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
         .noto-serif {
@@ -63,7 +64,7 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: linear-gradient(45deg, #9a5c16, #9a5c16);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -82,7 +83,7 @@
         }
 
         .nav-menu a:hover {
-            color: #dea54a;
+            color: #9a5c16;
         }
 
         .nav-actions {
@@ -92,7 +93,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #dea54a, #0d5b2b);
+            background: linear-gradient(135deg, #9a5c16, #9a5c16);
             color: white;
             padding: 0.75rem 1.5rem;
             border: none;
@@ -139,7 +140,7 @@
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #8b5cf6, #a855f7, #7e22ce);
+            background: linear-gradient(135deg, #9a5c16, #9a5c16, #9a5c16);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -160,8 +161,8 @@
 
         .btn-secondary {
             background: transparent;
-            border: 2px solid #8b5cf6;
-            color: #8b5cf6;
+            border: 2px solid #f6bb5c;
+            color: #f6bb5c;
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             text-decoration: none;
@@ -170,7 +171,7 @@
         }
 
         .btn-secondary:hover {
-            background: #8b5cf6;
+            background: #f6bb5c;
             color: white;
         }
 
@@ -211,13 +212,13 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #8b5cf6, #a855f7);
+            background: linear-gradient(90deg, #f6df5c, #f7be55);
         }
 
         .talk-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: #8b5cf6;
+            border-color: #f6b35c;
         }
 
         .talk-card h3 {
@@ -228,7 +229,7 @@
         }
 
         .talk-date {
-            color: #a855f7;
+            color: #f0f0f0;
             font-weight: 500;
             margin-bottom: 0.5rem;
             display: flex;
@@ -247,7 +248,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            background: linear-gradient(135deg, #9a5c16, #9a5c16);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -290,7 +291,7 @@
             content: '•';
             position: absolute;
             left: 0;
-            color: #8b5cf6;
+            color: #9a5c16;
             font-weight: bold;
         }
 
@@ -325,7 +326,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #8b5cf6, #a855f7);
+            background: linear-gradient(90deg, #9a5c16, #9a5c16);
         }
 
         .testimonial-content p {
@@ -358,7 +359,7 @@
         }
 
         .author-title {
-            color: #a855f7;
+            color: #1e4bc5;
             font-size: 0.9rem;
         }
 
@@ -421,7 +422,7 @@
             height: auto;
         }
     </style>
-    <style>
+      <style>
         /* [Styles précédents conservés] */
         /* Ajoutez ces nouveaux styles à la suite */
 
@@ -453,7 +454,7 @@
 
         .archive-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(3, 43, 153, 0.299);
         }
 
         .archive-image {
@@ -477,7 +478,7 @@
         }
 
         .archive-date {
-            color: #a855f7;
+            color: #536fe1;
             font-weight: 500;
             margin-bottom: 0.5rem;
             display: flex;
@@ -565,11 +566,136 @@
             }
         }
     </style>
-    <!-- [Inclure tous les styles précédents] -->
+    
+<style>
+    /* Styles pour le nouveau carousel */
+    .media-carousel-container {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+    
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(45, 45, 45, 0.8);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s;
+    }
+    
+    .carousel-arrow:hover {
+        background: rgba(168, 85, 247, 0.8);
+    }
+    
+    .carousel-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .prev {
+        left: 0;
+    }
+    
+    .next {
+        right: 0;
+    }
+    
+    .media-carousel {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        padding: 1rem 0;
+    }
+    
+    .media-item {
+        min-width: 300px;
+        scroll-snap-align: start;
+        background: rgba(45, 45, 45, 0.8);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s, opacity 0.3s;
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+    
+    .media-item.active {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .carousel-dots .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(168, 85, 247, 0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .carousel-dots .dot.active {
+        background: #a855f7;
+        transform: scale(1.2);
+    }
+    
+    @media (max-width: 768px) {
+        .media-carousel-container {
+            padding: 0 30px;
+        }
+        
+        .carousel-arrow {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .media-item {
+            min-width: 280px;
+        }
+    }
+     .theme-toggle {
+            background: none;
+            border: none;
+            color: #e1e1e1;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+         .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+</style>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body class="noto-serif">
-       <header class="header noto-serif">
+   <header class="header noto-serif">
         <div class="nav-container">
             <div class="logo">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
@@ -579,18 +705,39 @@
                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                 </svg>
                 <img class="logo" src="{% static 'img/logo.png' %}" alt="Logo">
-                <h1 class="text-secondary" style="font-size: 1.3em;"><a style="text-decoration: none;" class="text-secondary" href="{% url 'first_page' %}">WUFA</a></h1>
+                <h1 class="text-secondary" style="font-size: 1.3em;"><a style="text-decoration: none;" class="text-secondary" href="{% url 'first_page' %}">WUFA</a> </h1>
             </div>
             <nav class="nav-menu">
-                <a href="{% url 'first_page' %}">Accueil</a>
-                <a href="{% url 'index' %}">Discussions</a>
-                <a href="#projets">Projets</a>
-                <a href="#formations">Formations</a>
+                
+                <a  href="{% url 'first_page' %}"> Accueil</a>
+                  <a href="{% url 'index' %}">Discussions</a>
+                <a href="{% url 'projets' %}">Projets</a>
+                <a href="{% url 'gardentalks' %}">Garden Talks</a>
+              
             </nav>
             <div class="nav-actions">
+                {% if user.is_authenticated %}
+                 <div class="user-controls">
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-sun"></i>
+            </button>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle text-light" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{indentifiant}}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'home' %}">settings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+                {% else %}
                 <span>Si</span>
-                <a href="#inscription" class="btn-primary">S'inscrire</a>
-                <a href="#inscription" class="btn-primary">Connexion</a>
+                <a href="{% url 'register' %}" class="btn-primary">S'inscrire</a>
+                 <a href="{% url 'login' %}" class="btn-primary">Connexion</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -601,12 +748,10 @@
             <p>Des conversations intimes et inspirantes avec des personnalités influentes dans un cadre décontracté.</p>
             <div class="hero-buttons">
                 <a href="#prochaines-talks" class="btn-primary">Voir les prochaines sessions</a>
-                <a href="#archives" class="btn-secondary">Explorer les archives</a>
+                <a href="https://calendly.com/wufa" target="_blank" class="btn-secondary">S'inscrire</a>
             </div>
         </div>
     </section>
-
-    <!-- [Section des prochains événements identique] -->
 
     <!-- Nouvelle Section Archives -->
     <section class="archive-section" id="archives">
@@ -620,7 +765,7 @@
                 <!-- Événement 1 -->
                 <div class="archive-card">
                     <div class="archive-image">
-                        <img src="{% static 'img/events/togo-vbg.jpg' %}" alt="Garden Talk Togo">
+                        <img src="{% static 'img/events/togo-vbg.webp' %}" alt="Garden Talk Togo">
                     </div>
                     <div class="archive-content">
                         <div class="archive-date">
@@ -637,7 +782,7 @@
                             Discussion stratégique sur le rôle clé des femmes dans la prévention de l'extrémisme violent au Togo. Échanges avec des acteurs clés du développement et de la sécurité.
                         </div>
                         <div>
-                            <span class="archive-tag">Violences Basées sur le Genre</span>
+                            <span class="archive-tag">Violences sur le Genre</span>
                             <span class="archive-tag">Éducation</span>
                             <span class="archive-tag">Sécurité</span>
                         </div>
@@ -684,7 +829,7 @@
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
-                            10 Janvier 2024
+                             15 mars 2025
                         </div>
                         <h3 class="archive-title">Entrepreneuriat féminin : lever les barrières fiscales</h3>
                         <div class="archive-excerpt">
@@ -705,15 +850,22 @@
         </div>
     </section>
 
-    <!-- Nouvelle Section Médias -->
-    <section class="media-section">
-        <div class="media-container">
-            <h2 class="section-title">Ils parlent des Garden Talks</h2>
+<!-- Nouvelle Section Médias -->
+<section class="media-section">
+    <div class="media-container">
+        <h2 class="section-title">Ils parlent des Garden Talks</h2>
+        
+        <div class="media-carousel-container">
+            <button class="carousel-arrow prev" aria-label="Précédent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
             
             <div class="media-carousel">
-                <div class="media-item">
+                <div class="media-item active">
                     <div class="media-image">
-                        <img src="{% static 'img/press/press1.jpg' %}" alt="Article sur le Garden Talk Togo">
+                        <img src="{% static 'img/press/press1.webp' %}" alt="Article sur le Garden Talk Togo">
                     </div>
                     <div class="media-caption">
                         "WUFA crée l'événement à Lomé sur les VBG et l'extrémisme violent" - Togo Presse
@@ -722,7 +874,7 @@
                 
                 <div class="media-item">
                     <div class="media-image">
-                        <img src="{% static 'img/press/press2.jpg' %}" alt="Reportage sur la RSE">
+                        <img src="{% static 'img/press/press2.webp' %}" alt="Reportage sur la RSE">
                     </div>
                     <div class="media-caption">
                         "L'Association des Femmes de l'OTR inspire les entreprises" - Financial Afrik
@@ -731,7 +883,7 @@
                 
                 <div class="media-item">
                     <div class="media-image">
-                        <img src="{% static 'img/press/press3.jpg' %}" alt="Interview des participantes">
+                        <img src="{% static 'img/press/press3.webp' %}" alt="Interview des participantes">
                     </div>
                     <div class="media-caption">
                         "Comment les Garden Talks transforment le leadership féminin" - Forbes Afrique
@@ -746,17 +898,188 @@
                         "Un modèle de networking qui fait école" - Jeune Afrique
                     </div>
                 </div>
+
+                 <div class="media-item">
+                    <div class="media-image">
+                        <img src="{% static 'img/press/press5.jpg' %}" alt="Couverture médiatique">
+                    </div>
+                    <div class="media-caption">
+                        "Un modèle de networking qui fait école" - Jeune Afrique
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-arrow next" aria-label="Suivant">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="carousel-dots">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            <span class="dot" data-index="3"></span>
+        </div>
+    </div>
+</section>
+
+
+    <section class="talks-section" id="prochaines-talks">
+        <h2 class="section-title">Prochaines Garden Talks</h2>
+        <div class="talks-container">
+            <div class="talk-card">
+                <h3>Leadership féminin en Afrique</h3>
+                <div class="talk-date">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    15 Juin 2024 - 18h00 (GMT)
+                </div>
+                <div class="talk-speaker">
+                    <div class="speaker-avatar">AD</div>
+                    <div class="speaker-info">
+                        <div class="speaker-name">Aminata Diallo</div>
+                        <div class="speaker-title">PDG, Groupe Diallo</div>
+                    </div>
+                </div>
+                <div class="talk-description">
+                    Une discussion sur les défis et opportunités du leadership féminin dans le contexte africain contemporain.
+                </div>
+                <ul class="talk-features">
+                    <li>Format: Discussion intime (max 20 personnes)</li>
+                    <li>Lieu: Jardin de l'Hôtel Savana, Dakar</li>
+                    <li>Durée: 1h30 de discussion + networking</li>
+                    <li>Langue: Français</li>
+                </ul>
+                <a href="#" class="btn-primary">Réserver ma place</a>
+            </div>
+
+            <div class="talk-card">
+                <h3>Entrepreneuriat social</h3>
+                <div class="talk-date">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    22 Juin 2024 - 17h30 (GMT)
+                </div>
+                <div class="talk-speaker">
+                    <div class="speaker-avatar">FK</div>
+                    <div class="speaker-info">
+                        <div class="speaker-name">Fatoumata Keita</div>
+                        <div class="speaker-title">Fondatrice, Green Africa</div>
+                    </div>
+                </div>
+                <div class="talk-description">
+                    Comment créer un impact social tout en bâtissant une entreprise viable en Afrique.
+                </div>
+                <ul class="talk-features">
+                    <li>Format: Session virtuelle (Zoom)</li>
+                    <li>Accès: Lien envoyé après inscription</li>
+                    <li>Durée: 1h de discussion + Q&A</li>
+                    <li>Langue: Anglais</li>
+                </ul>
+                <a href="#" class="btn-primary">Réserver ma place</a>
+            </div>
+
+            <div class="talk-card">
+                <h3>Innovation technologique</h3>
+                <div class="talk-date">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    5 Juillet 2024 - 19h00 (GMT)
+                </div>
+                <div class="talk-speaker">
+                    <div class="speaker-avatar">NM</div>
+                    <div class="speaker-info">
+                        <div class="speaker-name">Nadia Mbeki</div>
+                        <div class="speaker-title">CTO, TechAfrique</div>
+                    </div>
+                </div>
+                <div class="talk-description">
+                    Les femmes africaines à l'avant-garde de la révolution technologique sur le continent.
+                </div>
+                <ul class="talk-features">
+                    <li>Format: Hybride (physique + virtuel)</li>
+                    <li>Lieu: Innovation Hub, Abidjan</li>
+                    <li>Durée: 2h avec démonstrations</li>
+                    <li>Langue: Français</li>
+                </ul>
+                <a href="#" class="btn-primary">Réserver ma place</a>
             </div>
         </div>
     </section>
 
-    <!-- [Sections témoignages et CTA identiques] -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <h2 class="section-title">Témoignages des participantes</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"Les Garden Talks ont transformé ma vision du leadership. Pouvoir échanger directement avec des femmes qui ont réussi dans des conditions similaires aux miennes a été incroyablement motivant."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AS</div>
+                        <div class="author-info">
+                            <div class="author-name">Aïcha Sow</div>
+                            <div class="author-title">Entrepreneure, Sénégal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"L'atmosphère des Garden Talks est unique. On se sent en confiance pour poser des questions et partager nos expériences. J'ai trouvé des mentors précieuses grâce à ces rencontres."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MB</div>
+                        <div class="author-info">
+                            <div class="author-name">Mariam Bâ</div>
+                            <div class="author-title">Consultante, Mali</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"Après chaque Garden Talk, je repars avec des idées nouvelles et un réseau élargi. C'est devenu un rendez-vous incontournable dans mon agenda professionnel."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">KN</div>
+                        <div class="author-info">
+                            <div class="author-name">Kadidiatou Ndiaye</div>
+                            <div class="author-title">Directrice Marketing, Côte d'Ivoire</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Prête à rejoindre nos Garden Talks ?</h2>
+            <p>Inscrivez-vous dès maintenant pour participer à nos prochaines sessions inspirantes et élargir votre réseau professionnel.</p>
+            <a href="https://calendly.com/wufa-gardentalks" class="btn-primary" target="_blank">Réserver votre place</a>
+        </div>
+    </section>
 
     <footer class="footer">
         <p>&copy; 2024 WUFA.africa - Tous droits réservés. Plateforme dédiée aux femmes africaines leaders.</p>
     </footer>
-*
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Animation des cartes au hover
         document.querySelectorAll('.talk-card').forEach(card => {
@@ -783,7 +1106,7 @@
             });
         });
     </script>
-    <script>
+     <script>
         // [Scripts précédents conservés]
         
         // Nouveau script pour le carousel médias
@@ -819,6 +1142,80 @@
             });
         });
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.querySelector('.media-carousel');
+        const items = document.querySelectorAll('.media-item');
+        const dots = document.querySelectorAll('.carousel-dots .dot');
+        const prevBtn = document.querySelector('.carousel-arrow.prev');
+        const nextBtn = document.querySelector('.carousel-arrow.next');
+        let currentIndex = 0;
+        const itemWidth = 300 + 24; // width + gap
+
+        function updateCarousel() {
+            // Update active class on items
+            items.forEach((item, index) => {
+                item.classList.toggle('active', index === currentIndex);
+            });
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+            
+            // Scroll carousel
+            carousel.scrollTo({
+                left: currentIndex * itemWidth,
+                behavior: 'smooth'
+            });
+        }
+
+        // Arrow navigation
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        });
+
+        // Dot navigation
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentIndex = parseInt(dot.getAttribute('data-index'));
+                updateCarousel();
+            });
+        });
+
+        // Auto-rotation (optionnel)
+        let interval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        }, 5000);
+
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => {
+            clearInterval(interval);
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            interval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % items.length;
+                updateCarousel();
+            }, 5000);
+        });
+    });
+</script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+

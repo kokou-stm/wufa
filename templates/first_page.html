@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
+    <title>WUFA - Plateforme pour Femmes Africaines Leaders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ca00bf51a9.js" crossorigin="anonymous"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+
+        .noto-serif {
+            font-family: "Noto Serif", serif;
+            font-optical-sizing: auto;
+
+        }
+
+        * {
+            font-family: "Noto Serif", serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .logo {
+            width: 50px;
+            /* Spécifiez la largeur du logo */
+            height: auto;
+            /* Conserve les proportions */
+        }
+
+        body {
+            /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; */
+            font-family: 'noto-serif', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            line-height: 1.6;
+        }
+
+        .header {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #dea54a;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dea54a, #763f0e);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px r#763f0e;
+        }
+
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 2rem;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(74, 222, 128, 0.1) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #763f0e, #763f0e, #763f0e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #763f0e;
+            color: #763f0e;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #763f0e;
+            color: white;
+        }
+
+        .events-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #333;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #763f0e, #763f0e);
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: #763f0e;
+        }
+
+        .event-card.garden-talks::before {
+            background: linear-gradient(90deg, #ffffff, #f6f6f7);
+        }
+
+        .event-card.regards-femmes::before {
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+        }
+
+        .event-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .event-card p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-features li {
+            padding: 0.5rem 0;
+            color: #aaa;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .event-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .stats-section {
+            background: rgba(74, 222, 128, 0.05);
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #763f0e;
+            display: block;
+        }
+
+        .stat-label {
+            color: #ccc;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .testimonials-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(74, 222, 128, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ade80' fill-opacity='0.03'%3E%3Ccircle cx='7' cy='7' r='7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.3;
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-card {
+            background: rgba(45, 45, 45, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #763f0e, #763f0e, #763f0e);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px #763f0e;
+            border-color: #763f0e;
+        }
+
+        .testimonial-content {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            color: #763f0e;
+            opacity: 0.3;
+            position: absolute;
+            top: -1rem;
+            left: -0.5rem;
+            font-family: serif;
+            line-height: 1;
+        }
+
+        .testimonial-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #e5e5e5;
+            font-style: italic;
+            padding-left: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #763f0e, #763f0e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-title {
+            font-size: 0.9rem;
+        }
+
+        .testimonial-carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(74, 222, 128, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #763f0e;
+            transform: scale(1.2);
+        }
+
+        .dot:hover {
+            background: #763f0e;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        .footer p {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+         .theme-toggle {
+            background: none;
+            border: none;
+            color: #e1e1e1;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+         .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+
+<body class="noto-serif">
+    <header class="header noto-serif">
+        <div class="nav-container">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="color: var(--primary-color);">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <img class="logo" src="{% static 'img/logo.png' %}" alt="Logo">
+                <h1 class="text-secondary" style="font-size: 1.3em;"><a style="text-decoration: none;" class="text-secondary" href="{% url 'first_page' %}">WUFA</a> </h1>
+            </div>
+            <nav class="nav-menu">
+                
+                <a  href="{% url 'first_page' %}"> Accueil</a>
+                  <a href="{% url 'index' %}">Discussions</a>
+                <a href="{% url 'projets' %}">Projets</a>
+                <a href="{% url 'gardentalks' %}">Garden Talks</a>
+              
+            </nav>
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                 <div class="user-controls">
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-sun"></i>
+            </button>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle text-light" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{indentifiant}}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'home' %}">settings</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+                {% else %}
+                <span>Si</span>
+                <a href="{% url 'register' %}" class="btn-primary">S'inscrire</a>
+                 <a href="{% url 'login' %}" class="btn-primary">Connexion</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <section class="hero noto-serif">
+        <div class="row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card bg-transparent justify-content-center align-items-center border-0">
+                    <img src=" {% static 'img/femme.png' %}" style="height: 40%; width: 50%;"
+                        class="card-img-center rounded-circle" alt="...">
+                    <!-- <div class="card-body">
+        <h5 class="card-title">Special title treatment</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div> -->
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card bg-transparent border-0">
+                    <div class="card-body">
+                        <div class="hero-content">
+                            <h1 class="" style="font-size: 3rem; font-weight: bold;">Women United for Action</h1>
+                            <p class="mb-5">La plateforme qui connecte les femmes africaines leaders et visionnaires.
+                                Participez à
+                                des discussions enrichissantes, échangez avec des dirigeants et développez votre réseau
+                                professionnel.</p>
+                            <div class="hero-buttons ">
+                                <a href="{% url 'index' %}" class="btn-primary">Rejoindre la communauté</a>
+                                <a href="#evenements" class="btn-secondary">Découvrir nos événements</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <section class="events-section" id="evenements">
+        <h2 class="section-title">Nos Événements</h2>
+        <div class="events-grid">
+            <div class="event-card garden-talks">
+                <h3>Garden Talks</h3>
+                <p>Des conversations intimes et inspirantes avec des personnalités influentes dans un cadre décontracté.
+                </p>
+                <ul class="event-features">
+                    <li>Échanges directs avec des leaders</li>
+                    <li>Format interactif et personnel</li>
+                    <li>Networking de qualité</li>
+                    <li>Sessions mensuelles</li>
+                     <li>Ouvert au publique</li>
+                </ul>
+                <a href="{% url 'gardentalks' %}" class="btn-primary">S'inscrire aux Garden Talks</a>
+            </div>
+
+            <div class="event-card regards-femmes">
+                <h3>Regards de Femmes</h3>
+                <p>Discussions virtuelles et physiques sur les enjeux contemporains vus par les femmes africaines.</p>
+                <ul class="event-features">
+                    <li>Débats d'actualité</li>
+                    <li>Perspectives féminines africaines</li>
+                    <li>Format hybride (virtuel/physique)</li>
+                    <li>Sessions bimensuelles</li>
+                   
+                </ul>
+                <a href="{% url 'index' %}" class="btn-primary">Rejoindre les discussions</a>
+            </div>
+
+            <div class="event-card">
+                <h3>Garden Breakfast</h3>
+                <p>Événements matinaux exclusifs pour commencer la journée avec inspiration et réseautage.</p>
+                <ul class="event-features">
+                    <li>Petit-déjeuner networking</li>
+                    <li>Présentations courtes</li>
+                    <li>Ambiance conviviale</li>
+                    <li>Événements ponctuels</li>
+                    <li>Rencontres  exceptionnelles</li>
+                </ul>
+                <a href="https://calendly.com/wufa" target="_blank"class="btn-primary">Participer aux Breakfast</a>
+              
+            </div>
+
+            <div class="event-card">
+                <h3>VIP Talks</h3>
+                <p>Rencontres exclusives avec des personnalités de premier plan pour des échanges privilégiés.</p>
+                <ul class="event-features">
+                    <li>Accès VIP limité</li>
+                    <li>Personnalités d'exception</li>
+                    <li>Contenu exclusif</li>
+                    <li>Événements sur invitation</li>
+                </ul>
+              <a href="https://calendly.com/wufa" class="btn-primary">Demander une invitation</a>
+            </div>
+        </div>
+    </section>
+    <section class="stats-section">
+        <h2 class="section-title">Statistiques</h2>
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <div class="stat-label">Femmes leaders connectées</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">150+</span>
+                <div class="stat-label">Garden Talks organisés</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <div class="stat-label">Dirigeants participants</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">25</span>
+                <div class="stat-label">Pays représentés</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <h2 class="section-title">Ce que disent nos membres</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">"</div>
+                        <p>"WUFA m'a permis de rencontrer des femmes extraordinaires et d'échanger directement avec des
+                            dirigeants que je n'aurais jamais pu approcher autrement. Les Garden Talks ont transformé ma
+                            vision du leadership."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AM</div>
+                        <div class="author-info">
+                            <div class="author-name">Aminata Mbaye</div>
+                            <div class="author-title">Entrepreneure, Sénégal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">"</div>
+                        <p>"Les discussions 'Regards de Femmes' offrent une perspective unique sur les enjeux africains.
+                            C'est un espace où notre voix compte vraiment et où nous pouvons influencer les décisions."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">FK</div>
+                        <div class="author-info">
+                            <div class="author-name">Fatou Kiné Diop</div>
+                            <div class="author-title">Directrice ONG, Mali</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">"</div>
+                        <p>"Le networking sur WUFA est d'une qualité exceptionnelle. J'ai trouvé des partenaires, des
+                            mentors et des opportunités d'affaires grâce aux VIP Talks et Garden Breakfast."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">NJ</div>
+                        <div class="author-info">
+                            <div class="author-name">Nadia Jawad</div>
+                            <div class="author-title">Investisseuse, Maroc</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-carousel-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="text-secondary">Prête à faire partie du changement ?</h2>
+            <p>Rejoignez une communauté dynamique de femmes africaines qui façonnent l'avenir. Inscrivez-vous facilement
+                via notre système de réservation intégré.</p>
+            <a href="https://calendly.com/wufa" class="btn-primary" target="_blank">Réserver votre place</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2024 WUFA.africa - Tous droits réservés. Plateforme dédiée aux femmes africaines leaders.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
+    <script>
+        // Carousel des témoignages
+        let currentTestimonial = 1;
+        const totalTestimonials = 3;
+
+        function currentSlide(n) {
+            showTestimonial(currentTestimonial = n);
+        }
+
+        function nextSlide() {
+            currentTestimonial = currentTestimonial >= totalTestimonials ? 1 : currentTestimonial + 1;
+            showTestimonial(currentTestimonial);
+        }
+
+        function showTestimonial(n) {
+            const cards = document.querySelectorAll('.testimonial-card');
+            const dots = document.querySelectorAll('.dot');
+
+            cards.forEach((card, index) => {
+                card.style.display = window.innerWidth <= 768 ? (index === n - 1 ? 'block' : 'none') : 'block';
+            });
+
+            dots.forEach(dot => dot.classList.remove('active'));
+            if (dots[n - 1]) dots[n - 1].classList.add('active');
+        }
+
+        // Auto-rotation des témoignages sur mobile
+        if (window.innerWidth <= 768) {
+            setInterval(nextSlide, 5000);
+        }
+
+        // Animation des statistiques au scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numbers = entry.target.querySelectorAll('.stat-number');
+                    numbers.forEach(number => {
+                        animateNumber(number);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        observer.observe(document.querySelector('.stats-section'));
+
+        function animateNumber(element) {
+            const target = parseInt(element.textContent);
+            const duration = 2000;
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + '+';
+                }
+            }, 16);
+        }
+
+        // Smooth scroll pour les liens de navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation des cartes au hover
+        document.querySelectorAll('.event-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+
+</html>

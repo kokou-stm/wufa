@@ -338,7 +338,7 @@ def connection(request):
                     print("Utilisateur infos: ", auth_user.username, auth_user.email)
                     login(request, auth_user)
                     
-                    return redirect("index")
+                    return redirect("first_page")
                 else :
                     mess = "Incorrect password"
             else:
@@ -598,6 +598,32 @@ def index(request):
     })
 
 
+def first_page(request):
+    indentifiant = str(request.user.username)[:2]
+    chats = Chat.objects.all()
+    return render(request, 'first_page.html', {
+        'username': request.user.username,
+        'indentifiant': indentifiant, 
+        'chats': chats, 
+    })
+@login_required
+def projets(request):
+    indentifiant = str(request.user.username)[:2]
+    chats = Chat.objects.all()
+    return render(request, 'projets.html', {
+        'username': request.user.username,
+        'indentifiant': indentifiant, 
+        'chats': chats, 
+    })
+@login_required
+def gardentalks(request):
+    indentifiant = str(request.user.username)[:2]
+    chats = Chat.objects.all()
+    return render(request, 'gardentalks.html', {
+        'username': request.user.username,
+        'indentifiant': indentifiant, 
+        'chats': chats, 
+    })
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect

@@ -1,237 +1,406 @@
 <!DOCTYPE html>
-
-<html lang="en">
+{% load static %}
+<html lang="fr">
 
 <head>
-  {%load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
+    <title>Inscription - WUFA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
+        :root {
+            --primary: #F4F1EB;
+            --primary-light: #F4F1EB;
+            --primary-dark: #F4F1EB;
+            --primary-transparent: rgba(222, 165, 74, 0.1);
+            --bg-dark: #1a1a1a;
+            --bg-darker: #2d2d2d;
+        }
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        .noto-serif {
+            font-family: "Noto Serif", serif;
+            font-optical-sizing: auto;
+        }
 
-  <!--link rel="stylesheet" href="{% static 'css/styles.css' %}"-->
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="{% static 'styles.css' %}">
-  <title>Wufa</title>
+        * {
+            font-family: "Noto Serif", serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <link rel="icon" type="image/png" class="rounded-2" sizes="16x16" href="{% static 'img/Logo1.png' %}">
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Redressed&family=Merriweather:wght@300;400;700&display=swap");
+        body {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .redressed {
-      font-family: "Redressed", serif;
-    }
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .merriweather {
-      font-family: "Merriweather", serif;
-    }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
 
-    .video-container {
-      margin-bottom: 15px;
-    }
-  </style>
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo img {
+            width: 50px;
+            height: auto;
+        }
+
+        /* Formulaire */
+        .register-container {
+            margin-top: 100px;
+            padding: 2rem;
+            flex: 1;
+        }
+
+  
+
+/* Pour les navigateurs anciens */
+input::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+        .register-card {
+            background: rgba(45, 45, 45, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid #333;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .register-header {
+            background: var(--primary);
+            color: #1a1a1a;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .register-tabs {
+            display: flex;
+            border-bottom: 1px solid #333;
+        }
+
+        .register-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .register-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .register-tab:hover:not(.active) {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .register-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            /* color: var(--primary); */
+        }
+
+        .form-control {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #333;
+            /* color: white;  */
+            padding-left: 45px;
+            height: 50px;
+            border-radius: 8px;
+        }
+        .form-control::placeholder {
+            color: #ccc;
+            /* opacity: 1; Pour les navigateurs modernes */
+        }
+
+        .form-control:focus {
+            /* background: rgba(40, 40, 40, 0.8); */
+            border-color: var(--primary);
+            /* box-shadow: 0 0 0 0.25rem rgba(222, 165, 74, 0.25); */
+            /* color: white; */
+        }
+
+        .btn-register {
+            background: var(--primary);
+            color: #1a1a1a;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-register:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px #F4F1EB;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .register-footer {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid #333;
+            color: #777;
+        }
+
+        .register-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .register-footer a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .register-container {
+                margin-top: 80px;
+                padding: 1rem;
+            }
+            
+            .register-card {
+                border-radius: 12px;
+            }
+            
+            .register-header {
+                font-size: 1.3rem;
+                padding: 1rem;
+            }
+            
+            .register-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-dark">
-
-  <section class="container redressed" style="margin-top: 3em; margin-bottom: 2em; font-size: 1.3em; ">
-    <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-6">
-
-
-        <div class="card text-center  border-2 redressed bg-transparent" style="border: solid 0.1px white;">
-
-          <div class="card-header bg-light">
-            <a href="{% url 'home' %}">Home- > </a>
-          </div>
-
-
-
-          <div class="card-header bg-light ">
-            <ul class="nav nav-tabs card-header-tabs text-center">
-              <li class="nav-item border-1" style="">
-                <a class="nav-link " href="{% url 'login' %}">Login</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="true" href="{% url 'register' %}">Create New account</a>
-              </li>
-
-
-            </ul>
-          </div>
-          <div class="card-body">
-
-            <h5 class="card-title"></h5>
-
-            <form action="{% url 'register' %}" method="post">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-
-                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-user pb-2"></i></span>
-                    </div>
-                    <input type="text" class="form-control merriweather" placeholder="First name" id="firstname"
-                      name="firstname" required>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-
-                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-user pb-2"></i></span>
-                    </div>
-                    <input type="text" class="form-control merriweather" placeholder="Last Name" id="lastname"
-                      name="lastname" required>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-
-                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-at pb-2"></i></span>
-                </div>
-
-                <input type="email" class="form-control merriweather" placeholder="Email" aria-label="Email"
-                  aria-describedby="basic-addon1" name="email" required>
-              </div>
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-key pb-2"></i></span>
-                </div>
-                <input type="password" id="passwordInput1" class="form-control merriweather" id="exampleInputPassword1"
-                  placeholder="Password" name="password1" required>
-                <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn1">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-key pb-2"></i></span>
-                </div>
-                <input type="password" id="passwordInput2" class="form-control merriweather" id="pass2"
-                  placeholder="Confirm Password" name="password2" required>
-                <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn2">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-
-              <div class="row">
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-briefcase pb-2"></i></span>
-                    </div>
-                    <input type="text" class="form-control merriweather" placeholder="Métier" id="job" name="job"
-                      required>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-phone pb-2"></i></span>
-                    </div>
-                    <input type="tel" class="form-control merriweather" placeholder="Numéro de téléphone" id="phone"
-                      name="phone" required>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-              <button type="submit" class="btn btn-primary  px-5 mt-3" style="border-radius: 1em;">Submit</button>
-            </form>
-
-
-
-
-          </div>
-          <div class="card-footer text-muted bg-light">
-            <div class="row">
-              <div class="col">
-                <a href="{% url 'login' %}"> Login</a>
-              </div>
-
+<body class="noto-serif">
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="color: var(--primary);">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <img src="{% static 'img/logo.png' %}" alt="WUFA Logo">
+                <h1 style="font-size: 1.3em;"><a style="text-decoration: none; color: inherit;" href="{% url 'first_page' %}">WUFA</a></h1>
             </div>
-
-          </div>
+            <div class="nav-actions">
+                <a href="{% url 'login' %}" class="btn-primary">Connexion</a>
+            </div>
         </div>
+    </header>
 
-
-      </div>
-      <div class="col-md-3"></div>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                Rejoindre la communauté WUFA
+            </div>
+            
+            <div class="register-tabs">
+                <a href="{% url 'login' %}" class="register-tab">Connexion</a>
+                <a href="{% url 'register' %}" class="register-tab active">Créer un compte</a>
+            </div>
+            
+            <div class="register-body">
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="fas fa-user input-icon "></i>
+                                    <input type="text" class="form-control " placeholder="Prénom" id="firstname" name="firstname" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <input type="text" class="form-control" placeholder="Nom" id="lastname" name="lastname" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="position-relative">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" class="form-control" placeholder="Email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="fas fa-key input-icon"></i>
+                                    <input type="password" class="form-control" id="passwordInput1" placeholder="Mot de passe" name="password1" required>
+                                    <i class="fas fa-eye password-toggle" id="togglePasswordBtn1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="fas fa-key input-icon"></i>
+                                    <input type="password" class="form-control" id="passwordInput2" placeholder="Confirmer le mot de passe" name="password2" required>
+                                    <i class="fas fa-eye password-toggle" id="togglePasswordBtn2"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="fas fa-briefcase input-icon"></i>
+                                    <input type="text" class="form-control" placeholder="Métier" id="job" name="job" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="fas fa-phone input-icon"></i>
+                                    <input type="tel" class="form-control" placeholder="Téléphone" id="phone" name="phone" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-register">S'inscrire</button>
+                </form>
+            </div>
+            
+            <div class="register-footer">
+                Déjà membre ? <a href="{% url 'login' %}">Connectez-vous ici</a>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <script>
-    document.getElementById('togglePasswordBtn1').addEventListener('click', function () {
-      var passwordInput = document.getElementById('passwordInput1');
-      var icon = document.querySelector('#togglePasswordBtn1 i');
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePasswordBtn1').addEventListener('click', function() {
+            const passwordInput = document.getElementById('passwordInput1');
+            const icon = this;
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        document.getElementById('togglePasswordBtn2').addEventListener('click', function() {
+            const passwordInput = document.getElementById('passwordInput2');
+            const icon = this;
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    </script>
 
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-      } else {
-        passwordInput.type = "password";
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-      }
-    });
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    document.getElementById('togglePasswordBtn2').addEventListener('click', function () {
-      var passwordInput = document.getElementById('passwordInput2');
-      var icon = document.querySelector('#togglePasswordBtn2 i');
-
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-      } else {
-        passwordInput.type = "password";
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-      }
-    });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
-    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-    crossorigin="anonymous"></script>
-
-
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-  <script defer>
-    {% autoescape off %}
-    {% for ms in messages %}
-    swal('{{ms|safe}}');
-    {% endfor %}
-    {% endautoescape %}
-  </script>
-
-
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+        swal({
+            title: "{{ message|safe }}",
+            icon: "{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}",
+            button: "OK"
+        });
+        {% endfor %}
+    </script>
+    {% endif %}
 </body>
 
 </html>

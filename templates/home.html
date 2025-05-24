@@ -478,12 +478,13 @@
       userDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
       document.getElementById('input-message').value = '';
+      console.log('Message envoyé:', userMessage, username, roomName);
       chatSocket.send(JSON.stringify({
         room_name: roomName,
         message: userMessage,
         username: username,
       }));
-
+        console.log('Message bien envoyé:')
       // GESTION DU MENU "3 POINTS"
       const threeDots = userDiv.querySelector('.three-dots');
       const menuOptions = userDiv.querySelector('.menu-options');
